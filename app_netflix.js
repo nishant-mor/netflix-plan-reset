@@ -3,6 +3,7 @@ const schedule 	= require('node-schedule');
 const moment	= require('moment');
 const USER_NAME = process.env.USER_NAME;
 const PASSWORD 	= process.env.PASSWORD;
+var _ = require('lodash');
 
 async function click(selector, page) {
     try {
@@ -27,19 +28,23 @@ async function type(selector, page, text){
 	}  
 }
 
-async function querySelector1(sel, page){
+async function isMobilePlanSelected(sel, page){
     try{
-        console.log("!!!" , sel);
-		await page.waitForSelector(sel, {
+		await page.waitForSelector("#appMountPoint > div > div > div.bd > div > div > ul > li:nth-child(1)", {
 			timeout: 10000
 		});
-        console.log("!!!" , sel);
 
         const textContent = await page.evaluateHandle(() => {
-            return document.querySelector("" + sel).innerText;
+            return document.querySelector("#appMountPoint > div > div > div.bd > div > div > ul > li:nth-child(1)").textContent;
          });
-         
-        console.log("Text Content : " , textContent); 
+		 console.log("Text Content : " , textContent); 
+
+		 if(_.includes(textContent, 'CURRENT')){
+			 return true;
+		 } else{
+			 return false;
+		 }
+		 return textContent;
          
     } catch(er){
         console.log("querySelectorAAA", er);
@@ -79,10 +84,31 @@ async function hit() {
 	await new Promise(r => setTimeout(r, 10000)) // add wait ;
 
 	await click(loginButtonSelector, page);
-	await new Promise(r => setTimeout(r, 10000)) // add wait ;
+	await new Promise(r => setTimeout(r, 20000)) // add wait ;
 
-    await querySelector1(mobilePlanSelector, page);
-    await new Promise(r => setTimeout(r, 10000)) // add wait ;
+    var selected  = await isMobilePlanSelected(mobilePlanSelector, page);
+	console.log("~~~", selected);
+	if(selected){
+		// Do nothing
+		console.log("MOBIle plan already selected");
+	}
+	else{
+		console.log("Changing plan");
+		await click(mobilePlanSelector, page);
+		await new Promise(r => setTimeout(r, 20000)) // add wait ;
+
+		console.log("Continue");
+
+		await click(submitButton, page);
+		await new Promise(r => setTimeout(r, 20000)) // add wait ;
+
+		console.log("Confirm Selection");
+
+		await click(confirmSelection, page);
+		await new Promise(r => setTimeout(r, 20000)) // add wait ;
+	
+	}
+    await new Promise(r => setTimeout(r, 20000)) // add wait ;
 
 	//await click(submitButton, page);
     await new Promise(r => setTimeout(r, 50000)) // add wait ;
