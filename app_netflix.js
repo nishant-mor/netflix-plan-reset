@@ -44,10 +44,9 @@ async function isMobilePlanSelected(sel, page){
 		 } else{
 			 return false;
 		 }
-		 return textContent;
          
     } catch(er){
-        console.log("querySelectorAAA", er);
+        console.log("Error: isMobilePlanSelected", er);
     }
 }
 
@@ -56,7 +55,7 @@ async function hit() {
     try{
 
 	const browser = await puppeteer.launch({
-		headless: false,
+		headless: true,
 		args: ['--no-sandbox']
 	});
 	const page = await browser.newPage();
