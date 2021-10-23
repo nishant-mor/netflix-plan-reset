@@ -37,7 +37,7 @@ async function isMobilePlanSelected(sel, page){
         const textContent = await page.evaluateHandle(() => {
             return document.querySelector("#appMountPoint > div > div > div.bd > div > div > ul > li:nth-child(1)").textContent;
          });
-		 console.log("Text Content : " , textContent); 
+		 //console.log("Text Content : " , textContent); 
 
 		 if(_.includes(textContent, 'CURRENT')){
 			 return true;
@@ -128,23 +128,5 @@ async function hit() {
 
 	console.log('Checking', time);
     hit();
-    /*
-	if(day == 0 || day ==6 ){
-		console.log("Its Weekend!!")
-	}
-	else{
-		var t = Math.floor((Math.random() * 10) + 1)*60*1000;
-		if(process.env.NOW){ // Hit now 
-			t = 1;
-		}
-		setTimeout(function(){
-			hit();
-		}, t);
-	}
-
-	if(process.env.SCHEDULE){
-		schedule1();
-	}
-*/
 
 })();
