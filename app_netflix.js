@@ -8,7 +8,7 @@ var _ = require('lodash');
 async function click(selector, page) {
     try {
       await page.waitForSelector(selector , {
-        timeout: 10000
+        timeout: 100000
       })
       await page.click(selector)
     } catch (err) {
@@ -19,7 +19,7 @@ async function click(selector, page) {
 async function type(selector, page, text){
     try {
 		await page.waitForSelector(selector, {
-			timeout: 10000
+			timeout: 100000
 		});
 		await page.focus(selector); 
 		await page.keyboard.type(text);
@@ -31,7 +31,7 @@ async function type(selector, page, text){
 async function isMobilePlanSelected(sel, page){
     try{
 		await page.waitForSelector("#appMountPoint > div > div > div.bd > div > div > ul > li:nth-child(1)", {
-			timeout: 10000
+			timeout: 100000
 		});
 
         const textContent = await page.evaluateHandle(() => {
